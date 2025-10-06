@@ -13,23 +13,35 @@ const cors = createCorsMiddleware(config.allowedOrigins.length ? config.allowedO
 const rateLimiter = createRateLimiter();
 const authenticate = createAuthMiddleware(config);
 
+const SECURITY_HEADERS = (() => {
+  const headers = new Map(
+    Object.entries({
+      'Content-Security-Policy': [
+        "default-src 'self'",
+        "img-src 'self' data: https:",
+        "style-src 'self' 'unsafe-inline'",
+        "script-src 'self' 'unsafe-inline'",
+        "connect-src 'self' https: http:"
+      ].join('; '),
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Resource-Policy': 'same-origin'
+    })
+  );
+
+  if (config.isProduction && config.baseUrl.startsWith('https://')) {
+    headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  }
+
+  return headers;
+})();
+
 function setSecurityHeaders(res) {
-  const cspDirectives = [
-    "default-src 'self'",
-    "img-src 'self' data: https:",
-    "style-src 'self' 'unsafe-inline'",
-    "script-src 'self' 'unsafe-inline'",
-    "connect-src 'self' https: http:"
-  ];
-  res.setHeader('Content-Security-Policy', cspDirectives.join('; '));
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
-  if (config.baseUrl.startsWith('https://')) {
-    res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  for (const [header, value] of SECURITY_HEADERS) {
+    res.setHeader(header, value);
   }
 }
 

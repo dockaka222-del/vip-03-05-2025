@@ -22,7 +22,10 @@ function loadEnv() {
     if (!key || key in process.env) {
       return;
     }
-    const value = trimmed.slice(eqIndex + 1).trim();
+    const value = trimmed
+      .slice(eqIndex + 1)
+      .trim()
+      .replace(/^['"]|['"]$/g, '');
     process.env[key] = value;
   });
 }
@@ -62,8 +65,19 @@ const allowedOrigins = (() => {
   return Array.from(new Set(origins));
 })();
 
-export const config = Object.freeze({
-  nodeEnv: process.env.NODE_ENV || 'development',
+const deepFreeze = (value) => {
+  if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+    Object.getOwnPropertyNames(value).forEach((prop) => deepFreeze(value[prop]));
+    Object.freeze(value);
+  }
+  return value;
+};
+
+const nodeEnv = process.env.NODE_ENV || 'development';
+
+const configShape = {
+  nodeEnv,
+  isProduction: nodeEnv === 'production',
   port: toNumber(process.env.PORT, 3000),
   baseUrl: process.env.BASE_URL || 'http://localhost:3000',
   allowedOrigins,
@@ -88,8 +102,30 @@ export const config = Object.freeze({
     verificationTemplateId: process.env.BREVO_VERIFICATION_TEMPLATE_ID
   },
   webhookSecret: process.env.WEBHOOK_SECRET || 'webhook-secret'
-});
+};
 
-if (config.nodeEnv !== 'production') {
+const config = deepFreeze(configShape);
+
+if (config.isProduction) {
+  const missingKeys = [
+    ['ADMIN_EMAIL', config.adminEmail],
+    ['ADMIN_PASSWORD', config.adminPassword],
+    ['JWT_SECRET', config.jwtSecret && config.jwtSecret !== 'change-me' ? config.jwtSecret : null],
+    ['PAYOS_CLIENT_ID', config.payos.clientId],
+    ['PAYOS_API_KEY', config.payos.apiKey],
+    ['PAYOS_CHECKSUM_KEY', config.payos.checksumKey],
+    ['BREVO_API_KEY', config.brevo.apiKey]
+  ]
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
+
+  if (missingKeys.length) {
+    throw new Error(`Thiếu biến môi trường bắt buộc cho production: ${missingKeys.join(', ')}`);
+  }
+}
+
+if (!config.isProduction) {
   logInfo('Config loaded', { env: config.nodeEnv });
 }
+
+export { config };

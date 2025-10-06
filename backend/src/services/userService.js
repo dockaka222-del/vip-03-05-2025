@@ -4,6 +4,12 @@ import { generateRandomToken } from '../utils/token.js';
 import { validateEmail } from '../utils/validator.js';
 import { logSecurity } from '../utils/logger.js';
 
+function sanitizeUser(user) {
+  const safeUser = clone(user);
+  delete safeUser.passwordHash;
+  return safeUser;
+}
+
 export async function findUserByEmail(email) {
   const db = await readDatabase();
   return db.users.find((user) => user.email.toLowerCase() === email.toLowerCase()) || null;
@@ -45,6 +51,7 @@ export async function createUser({ email, password, name }) {
   if (exists) {
     throw new Error('Email đã tồn tại, vui lòng đăng nhập');
   }
+  const now = new Date().toISOString();
   const newUser = {
     id: `user_${Date.now()}_${Math.random().toString(36).slice(2)}`,
     email,
@@ -52,14 +59,12 @@ export async function createUser({ email, password, name }) {
     name: name?.trim() || email.split('@')[0],
     role: 'customer',
     verified: false,
-    createdAt: new Date().toISOString(),
+    createdAt: now,
     lastLoginAt: null
   };
   db.users.push(newUser);
   await writeDatabase(db);
-  const safeUser = clone(newUser);
-  delete safeUser.passwordHash;
-  return safeUser;
+  return sanitizeUser(newUser);
 }
 
 export async function authenticateUser({ email, password }) {
@@ -70,9 +75,7 @@ export async function authenticateUser({ email, password }) {
   }
   user.lastLoginAt = new Date().toISOString();
   await writeDatabase(db);
-  const safeUser = clone(user);
-  delete safeUser.passwordHash;
-  return safeUser;
+  return sanitizeUser(user);
 }
 
 export async function listUsers({ search = '', page = 1, pageSize = 20 }) {
@@ -85,11 +88,7 @@ export async function listUsers({ search = '', page = 1, pageSize = 20 }) {
     : db.users;
   const total = filtered.length;
   const offset = (page - 1) * pageSize;
-  const paginated = filtered.slice(offset, offset + pageSize).map((user) => {
-    const safeUser = clone(user);
-    delete safeUser.passwordHash;
-    return safeUser;
-  });
+  const paginated = filtered.slice(offset, offset + pageSize).map((user) => sanitizeUser(user));
   return { total, page, pageSize, items: paginated };
 }
 
@@ -109,9 +108,7 @@ export async function updateUser(id, payload) {
     user.role = payload.role;
   }
   await writeDatabase(db);
-  const safeUser = clone(user);
-  delete safeUser.passwordHash;
-  return safeUser;
+  return sanitizeUser(user);
 }
 
 export async function createEmailVerificationToken(userId) {
@@ -140,7 +137,5 @@ export async function verifyEmailToken(token) {
   user.verified = true;
   db.emailTokens = db.emailTokens.filter((item) => item.token !== token);
   await writeDatabase(db);
-  const safeUser = clone(user);
-  delete safeUser.passwordHash;
-  return safeUser;
+  return sanitizeUser(user);
 }

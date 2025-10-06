@@ -19,10 +19,12 @@ cp backend/.env.example backend/.env
 
 Các biến quan trọng:
 
-- `PORT`: cổng chạy API (mặc định 3000)
-- `ADMIN_EMAIL`, `ADMIN_PASSWORD`: tài khoản quản trị mặc định
-- Thông tin PayOS (`PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `RETURN_URL`, `CANCEL_URL`)
-- API Brevo (`BREVO_API_KEY`, `BREVO_VERIFICATION_TEMPLATE_ID`, ...)
+- `PORT`: cổng chạy API (mặc định 3000).
+- `ADMIN_EMAIL`, `ADMIN_PASSWORD`: tài khoản quản trị mặc định.
+- Thông tin PayOS (`PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `RETURN_URL`, `CANCEL_URL`).
+- API Brevo (`BREVO_API_KEY`, `BREVO_VERIFICATION_TEMPLATE_ID`, ...).
+
+> **Lưu ý:** Khi `NODE_ENV=production` máy chủ sẽ kiểm tra bắt buộc các biến quan trọng (PayOS, Brevo, JWT, tài khoản admin). Hãy chắc chắn điền chính xác để dịch vụ khởi động thành công.
 
 ## Khởi chạy API backend
 
@@ -32,6 +34,15 @@ node src/server.js
 ```
 
 Server sẽ tự tạo tài khoản quản trị nếu chưa tồn tại và phục vụ tại `http://localhost:3000`.
+
+### Khởi chạy production trên VPS Ubuntu 22.04
+
+```bash
+cd backend
+NODE_ENV=production PORT=3000 node src/server.js
+```
+
+Trước khi khởi chạy, hãy cấu hình `.env` trên máy chủ với domain thực tế, khoá PayOS/Brevo và thiết lập reverse proxy (Nginx) để phục vụ frontend tĩnh từ thư mục `frontend/`.
 
 ## Triển khai frontend
 
