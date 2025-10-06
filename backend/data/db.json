@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": "admin",
+      "email": "admin@vipdayne.net",
+      "passwordHash": "",
+      "name": "Quản trị viên",
+      "role": "admin",
+      "verified": true,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLoginAt": null
+    }
+  ],
+  "products": [
+    {
+      "id": "p1",
+      "name": "Combo Phát triển Frontend Tối ưu",
+      "slug": "combo-frontend-toi-uu",
+      "price": 690000,
+      "description": "Gói tài nguyên số giúp bạn xây dựng giao diện chất lượng sản xuất, bao gồm template, component và checklist tối ưu SEO.",
+      "downloadUrl": "https://vipdayne.net/downloads/combo-frontend.zip",
+      "thumbnail": "/assets/products/frontend.webp",
+      "tags": ["frontend", "seo", "performance"],
+      "active": true,
+      "createdAt": "2024-05-01T00:00:00.000Z"
+    },
+    {
+      "id": "p2",
+      "name": "Bộ công cụ Backend bảo mật",
+      "slug": "bo-cong-cu-backend",
+      "price": 790000,
+      "description": "Tài liệu và mã nguồn mẫu bảo mật cho Node.js, hướng dẫn triển khai production, CI/CD và giám sát.",
+      "downloadUrl": "https://vipdayne.net/downloads/backend-security.zip",
+      "thumbnail": "/assets/products/backend.webp",
+      "tags": ["backend", "security"],
+      "active": true,
+      "createdAt": "2024-06-15T00:00:00.000Z"
+    }
+  ],
+  "coupons": [],
+  "posts": [],
+  "orders": [],
+  "emailTokens": [],
+  "auditLogs": []
+}

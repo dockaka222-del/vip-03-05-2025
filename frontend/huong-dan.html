@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hướng dẫn sử dụng - Vipdayne.net</title>
+    <meta
+      name="description"
+      content="Hướng dẫn chi tiết cách đăng ký, mua hàng, thanh toán PayOS và xác thực email với Vipdayne.net."
+    />
+    <link rel="canonical" href="https://vipdayne.net/huong-dan.html" />
+    <link rel="stylesheet" href="/frontend/assets/css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <a class="navbar-logo" href="/frontend/">Vipdayne.net</a>
+        <div class="navbar-menu">
+          <a href="/frontend/index.html">Trang chủ</a>
+          <a href="/frontend/huong-dan.html">Hướng dẫn sử dụng</a>
+          <a href="/frontend/lien-he.html">Liên hệ</a>
+          <a href="/frontend/gio-hang.html">Giỏ hàng</a>
+          <a href="/frontend/dang-nhap.html">Đăng nhập</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <article class="card">
+        <h1>Quy trình mua sản phẩm số tại Vipdayne.net</h1>
+        <ol style="line-height: 1.8">
+          <li>Tạo tài khoản hoặc đăng nhập bằng email của bạn.</li>
+          <li>Chọn sản phẩm mong muốn, thêm vào giỏ hàng.</li>
+          <li>Kiểm tra giỏ hàng và tiến hành thanh toán qua QR PayOS.</li>
+          <li>Sau khi thanh toán thành công, hệ thống sẽ gửi email yêu cầu xác thực.</li>
+          <li>Xác thực email bằng liên kết Brevo để mở kho tải sản phẩm.</li>
+          <li>Tải về tài nguyên số kèm hướng dẫn cập nhật mới nhất.</li>
+        </ol>
+        <h2>Câu hỏi thường gặp</h2>
+        <details>
+          <summary>Tôi có thể thanh toán bằng phương thức nào?</summary>
+          <p>Vipdayne.net hỗ trợ thanh toán QR PayOS, tương thích với hầu hết ứng dụng ngân hàng tại Việt Nam.</p>
+        </details>
+        <details>
+          <summary>Tôi chưa nhận được email xác thực?</summary>
+          <p>
+            Kiểm tra mục spam, hoặc đăng nhập lại và truy cập mục đơn hàng để yêu cầu gửi lại email xác thực. Khi cần, liên
+            hệ <a href="mailto:support@vipdayne.net">support@vipdayne.net</a> để được hỗ trợ.
+          </p>
+        </details>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; <span id="current-year"></span> Vipdayne.net.</p>
+    </footer>
+
+    <script>
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+    <script type="module" src="/frontend/assets/js/ui.js"></script>
+  </body>
+</html>
