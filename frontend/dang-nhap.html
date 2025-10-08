@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đăng nhập - Vipdayne.net</title>
+    <meta name="description" content="Đăng nhập để quản lý đơn hàng và tải sản phẩm số tại Vipdayne.net." />
+    <link rel="stylesheet" href="/frontend/assets/css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <a class="navbar-logo" href="/frontend/">Vipdayne.net</a>
+        <div class="navbar-menu">
+          <a href="/frontend/index.html">Trang chủ</a>
+          <a href="/frontend/huong-dan.html">Hướng dẫn sử dụng</a>
+          <a href="/frontend/lien-he.html">Liên hệ</a>
+          <a href="/frontend/gio-hang.html">Giỏ hàng</a>
+          <a href="/frontend/dang-nhap.html">Đăng nhập</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="form-card">
+        <h1>Đăng nhập</h1>
+        <div id="feedback"></div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input id="password" name="password" type="password" minlength="8" required autocomplete="current-password" />
+          </div>
+          <button class="btn btn-primary" type="submit">Đăng nhập</button>
+        </form>
+        <p>Chưa có tài khoản? <a href="/frontend/dang-ky.html">Đăng ký ngay</a></p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; <span id="current-year"></span> Vipdayne.net.</p>
+    </footer>
+
+    <script>
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+    <script type="module" src="/frontend/assets/js/login.js"></script>
+  </body>
+</html>
