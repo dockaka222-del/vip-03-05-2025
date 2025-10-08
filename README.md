@@ -44,6 +44,8 @@ NODE_ENV=production PORT=3000 node src/server.js
 
 Trước khi khởi chạy, hãy cấu hình `.env` trên máy chủ với domain thực tế, khoá PayOS/Brevo và thiết lập reverse proxy (Nginx) để phục vụ frontend tĩnh từ thư mục `frontend/`.
 
+> **Hướng dẫn chi tiết:** Xem thêm tài liệu [Triển khai trên VPS Ubuntu 22.04 (1 vCPU / 1GB RAM)](docs/deploy-ubuntu-22.md) để có từng bước cài đặt Node.js, tạo service systemd và cấu hình Nginx/HTTPS.
+
 ## Triển khai frontend
 
 Giao diện là các file tĩnh trong thư mục `frontend`. Có thể phục vụ bằng Nginx hoặc máy chủ tĩnh đơn giản:
